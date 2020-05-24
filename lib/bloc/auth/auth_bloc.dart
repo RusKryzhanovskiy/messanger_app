@@ -48,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await Future.delayed(Duration(seconds: 2));
 //      yield state.copyWith(isLoading: false, isAuthenticated: false);
-      yield AuthFailure(error: 'Idi nah');
+      yield AuthFailure(error: '');
     } catch (error) {
       yield AuthFailure(error: error);
     }
