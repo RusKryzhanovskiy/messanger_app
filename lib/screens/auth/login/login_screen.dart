@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             type: SnackbarType.error,
           );
         } else if (!state.isLoading && state.isAuthenticated) {
-          Navigation.toScreen(context, HomeScreen());
+          Navigation.toScreenRemoveUntil(context, HomeScreen());
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(

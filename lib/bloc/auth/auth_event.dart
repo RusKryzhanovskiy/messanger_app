@@ -8,6 +8,11 @@ class CheckAuthenticationEvent extends AuthEvent {
   List<Object> get props => null;
 }
 
+class LogOutAuthenticationEvent extends AuthEvent {
+  @override
+  List<Object> get props => null;
+}
+
 class LoginEvent extends AuthEvent {
   final String login;
   final String password;
@@ -22,14 +27,14 @@ class LoginEvent extends AuthEvent {
 }
 
 class SignInEvent extends AuthEvent {
-  final String login;
+  final String name;
   final String password;
   final String mail;
   final int age;
   final String country;
 
   SignInEvent({
-    @required this.login,
+    @required this.name,
     @required this.password,
     @required this.mail,
     @required this.age,
@@ -37,5 +42,5 @@ class SignInEvent extends AuthEvent {
   });
 
   @override
-  List<Object> get props => [login, password, mail, age, country];
+  List<Object> get props => [name, password, mail, age, country];
 }

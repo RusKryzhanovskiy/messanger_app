@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messangerapp/bloc/auth/auth_bloc.dart';
+import 'package:messangerapp/bloc/users/users_bloc.dart';
 import 'package:messangerapp/screens/auth/splash/splash_screen.dart';
 
 void main() {
@@ -14,6 +15,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(
           create: (BuildContext context) => AuthBloc(),
+        ),
+        BlocProvider<UsersBloc>(
+          create: (BuildContext context) => UsersBloc(),
         ),
       ],
       child: MaterialApp(

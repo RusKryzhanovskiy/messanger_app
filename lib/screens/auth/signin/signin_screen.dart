@@ -17,8 +17,8 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final TextEditingController loginController = TextEditingController();
-  final FocusNode loginNode = FocusNode();
+  final TextEditingController nameController = TextEditingController();
+  final FocusNode nameNode = FocusNode();
   final TextEditingController passwordController = TextEditingController();
   final FocusNode passwordNode = FocusNode();
   final TextEditingController mailController = TextEditingController();
@@ -49,8 +49,8 @@ class _SignInScreenState extends State<SignInScreen> {
             state.error,
             type: SnackbarType.error,
           );
-        } else if (!state.isLoading && state.isAuthenticated) {
-          Navigation.toScreen(context, HomeScreen());
+        } else if (state.isAuthenticated) {
+          Navigation.toScreenRemoveUntil(context, HomeScreen());
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
@@ -94,17 +94,32 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               CustomTextField(
-                hint: 'Login',
-                focus: loginNode,
+                hint: 'Display name',
+                focus: nameNode,
                 inputAction: TextInputAction.next,
-                controller: loginController,
-                nextFocus: passwordNode,
+                controller: nameController,
+                nextFocus: mailNode,
                 padding: EdgeInsets.only(bottom: 12, top: 20),
+              ),
+              CustomTextField(
+                hint: 'E-Mail',
+                focus: mailNode,
+                nextFocus: passwordNode,
+                inputType: TextInputType.emailAddress,
+                inputAction: TextInputAction.next,
+                controller: mailController,
+                padding: EdgeInsets.only(bottom: 12),
+                validator: (String value) {
+                  if (Validator.isEmail(value)) {
+                    return null;
+                  }
+                  return 'Enter existing e-mail address';
+                },
               ),
               CustomTextField(
                 hint: 'Password',
                 focus: passwordNode,
-                nextFocus: mailNode,
+                nextFocus: ageNode,
                 obscureText: true,
                 inputAction: TextInputAction.next,
                 controller: passwordController,
@@ -113,21 +128,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     return null;
                   }
                   return 'Password must contain more than 8 symbols';
-                },
-                padding: EdgeInsets.only(bottom: 12),
-              ),
-              CustomTextField(
-                hint: 'E-Mail',
-                focus: mailNode,
-                nextFocus: ageNode,
-                inputType: TextInputType.emailAddress,
-                inputAction: TextInputAction.next,
-                controller: mailController,
-                validator: (String value) {
-                  if (Validator.isEmail(value)) {
-                    return null;
-                  }
-                  return 'Enter existing e-mail address';
                 },
                 padding: EdgeInsets.only(bottom: 12),
               ),
@@ -165,10 +165,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   if (isFieldsValid) {
                     FocusScope.of(context).requestFocus(FocusNode());
                     bloc.add(SignInEvent(
-                      login: loginController.text,
+                      name: nameController.text,
                       password: passwordController.text,
                       age: int.tryParse(ageController.text),
                       mail: mailController.text,
+                      
                       country: countryController.text,
                     ));
                   }

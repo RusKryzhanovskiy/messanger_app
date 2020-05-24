@@ -1,66 +1,108 @@
-import 'package:firebase_auth/firebase_auth.dart';
+class UserModel {
+  String id;
+  String name;
+  String avatarUrl;
+  String email;
+  String phone;
+  String gender;
+  int age;
+  String country;
 
-class User {
-  final String displayName;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String username;
-  final String phoneNumber;
-  final String photoUrl;
-  final String uid;
-
-  const User({
-    this.displayName,
-    this.firstName,
-    this.lastName,
+  UserModel({
+    this.id,
+    this.name,
+    this.avatarUrl,
+    this.age,
     this.email,
-    this.username,
-    this.phoneNumber,
-    this.photoUrl,
-    this.uid,
+    this.phone,
+    this.country,
+    this.gender,
   });
 
-  factory User.fromFirebaseUser(FirebaseUser firebaseUser) {
-    String firstName = firebaseUser?.displayName?.split(' ')?.first;
-    String lastName = firebaseUser?.displayName?.split(' ')?.last;
-    String username = firebaseUser?.email?.split('@')?.first;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          avatarUrl == other.avatarUrl &&
+          age == other.age &&
+          email == other.email &&
+          phone == other.phone &&
+          country == other.country &&
+          gender == other.gender);
 
-    return User(
-      displayName: firebaseUser.displayName,
-      firstName: firstName,
-      lastName: lastName,
-      username: username,
-      email: firebaseUser.email,
-      phoneNumber: firebaseUser.phoneNumber,
-      photoUrl: firebaseUser.photoUrl,
-      uid: firebaseUser.uid,
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      avatarUrl.hashCode ^
+      age.hashCode ^
+      email.hashCode ^
+      phone.hashCode ^
+      country.hashCode ^
+      gender.hashCode;
+
+  @override
+  String toString() {
+    return 'User{' +
+        ' id: $id,' +
+        ' name: $name,' +
+        ' avatarUrl: $avatarUrl,' +
+        ' age: $age,' +
+        ' email: $email,' +
+        ' phone: $phone,' +
+        ' country: $country,' +
+        ' gender: $gender,' +
+        '}';
+  }
+
+  UserModel copyWith({
+    String id,
+    String displayName,
+    String avatarUrl,
+    String location,
+    String age,
+    String email,
+    String phone,
+    String country,
+  }) {
+    return new UserModel(
+      id: id ?? this.id,
+      name: displayName ?? this.name,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      age: age ?? this.age,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      country: country ?? this.country,
+      gender: gender ?? this.gender,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'displayName': this.displayName,
-      'firstName': this.firstName,
-      'lastName': this.lastName,
+      'id': this.id,
+      'name': this.name,
+      'avatarUrl': this.avatarUrl,
+      'age': this.age,
       'email': this.email,
-      'username': this.username,
-      'phoneNumber': this.phoneNumber,
-      'photoUrl': this.photoUrl,
-      'uid': this.uid,
+      'phone': this.phone,
+      'country': this.country,
+      'gender': this.gender,
     };
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return new User(
-      displayName: map['displayName'] as String,
-      firstName: map['firstName'] as String,
-      lastName: map['lastName'] as String,
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      avatarUrl: map['avatarUrl'] as String,
+      age: map['age'] as int,
       email: map['email'] as String,
-      username: map['username'] as String,
-      phoneNumber: map['phoneNumber'] as String,
-      photoUrl: map['photoUrl'] as String,
-      uid: map['uid'] as String,
+      phone: map['phone'] as String,
+      country: map['country'] as String,
+      gender: map['gender'] as String,
     );
   }
 }
